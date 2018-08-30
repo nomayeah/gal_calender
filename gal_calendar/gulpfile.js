@@ -1,40 +1,26 @@
-var gulp = require("gulp");
-var sass = require("gulp-sass");
-var autoprefixer = require("gulp-autoprefixer");
-var frontnote = require("gulp-frontnote");
-var plumber = require("gulp-plumber");
-var uglify = require("gulp-uglify");
-var browser = require("browser-sync");
+// Sassのコンパイルタスクのサンプルファイルです。
 
-gulp.task("sass", function(){
-    gulp.src("sass/**/*scss")
-        .pipe(plumber())
-        .pipe(frontnote({
-            css: '../css/style.css'
-        }))
-        .pipe(sass())
-        .pipe(autoprefixer())
-        .pipe(gulp.dest("./css"))
-        .pipe(browser.reload({stream:true}))
-});
+// gulpプラグインの読み込み
+const gulp = require('gulp');
+// Sassをコンパイルするプラグインの読み込み
+const sass = require('gulp-sass');
 
-gulp.task("js", function() {
-    gulp.src(["js/**/*.js","!js/min/**/*.js"])
-        .pipe(plumber())
-        .pipe(uglify())
-        .pipe(gulp.dest("./js/min"))
-        .pipe(browser.reload({stream:true}))
-});
+// style.scssの監視タスクを作成する
+gulp.task('default', function () {
+  // ★ style.scssファイルを監視
+  gulp.watch('sass/style.scss', function () {
+    // style.scssの更新があった場合の処理
 
-gulp.task("server", function() {
-    browser({
-        server: {
-            baseDir: "./"
-        }
-    });
-});
-
-gulp.task("default",['server'], function() {
-    gulp.watch(["js/**/*.js","!js/min/**/*.js"],["js"]);
-    gulp.watch("sass/**/*.scss",["sass"]);
+    // style.scssファイルを取得
+    gulp.src('sass/style.scss')
+      // Sassのコンパイルを実行
+      .pipe(sass({
+        outputStyle: 'expanded'
+      })
+      // Sassのコンパイルエラーを表示
+      // (これがないと自動的に止まってしまう)
+      .on('error', sass.logError))
+      // cssフォルダー以下に保存
+      .pipe(gulp.dest('css'));
+  });
 });

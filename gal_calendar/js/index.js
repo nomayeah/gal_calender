@@ -1,5 +1,3 @@
-(function() {
-    window.addEventListener('load', function() {
-        alert('loaded');
-   });
-})();
+"use strict";
+let hoge = 123;
+console.log(hoge);
