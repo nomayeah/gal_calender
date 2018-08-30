@@ -1,3 +1,11 @@
+li {
+  color: red;
+}
+
+li span {
+  color: #000;
+}
+
 h1 {
   color: red;
 }
